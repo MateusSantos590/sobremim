@@ -184,12 +184,19 @@ h2{font-weight:400;font-size:clamp(34px,4.8vw,58px);line-height:1.02;letter-spac
 .book{--tc:var(--sc);display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:14px;background:var(--panel);border:1px solid var(--line);transition:transform .5s var(--ease),border-color .3s}
 .book.show{animation:bookin .7s var(--ease) both;animation-delay:calc(var(--i) * 40ms)}
 @keyframes bookin{from{opacity:0;transform:translateY(16px)}}
-.cover{position:relative;aspect-ratio:3/4;max-width:100%;border-radius:8px;overflow:hidden;padding:16px 14px 14px 26px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid var(--line2);
+.cover{position:relative;aspect-ratio:9/16;max-width:100%;border-radius:8px;overflow:hidden;padding:20px 14px 16px 26px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid var(--line2);
   background:linear-gradient(155deg,#161a16,#0b0d0b 78%);background:linear-gradient(155deg,color-mix(in srgb,var(--sc) 20%,#121512),#0b0d0b 78%)}
 .cover::before{content:"";position:absolute;left:12px;top:0;bottom:0;width:1px;background:color-mix(in srgb,var(--sc) 35%,transparent)}
 .cover::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.08) 50%,transparent 65%);transform:translateX(-100%);transition:transform .9s var(--ease)}
 @media (hover:hover){.book:hover .cover::after{transform:translateX(100%)}}
-.cover span{font-family:var(--serif);font-size:20px;line-height:1.08;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+.cover.has-img{padding:0;background:#0b0d0b}
+.cover.has-img::before{display:none}
+.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s var(--ease)}
+@media (hover:hover){.book:hover .cover img{transform:scale(1.04)}}
+.cover::after{z-index:1}
+.rate.reading{color:var(--acc);gap:8px}
+.rate.reading i{width:6px;height:6px;border-radius:50%;background:var(--acc);box-shadow:0 0 8px var(--acc);animation:blink 2.2s infinite}
+.cover span{font-family:var(--serif);font-size:22px;line-height:1.08;display:-webkit-box;-webkit-line-clamp:7;-webkit-box-orient:vertical;overflow:hidden}
 .cover i{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
 .rate{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;color:var(--warm);font-variant-numeric:tabular-nums}
 .bar{flex:1;height:2px;border-radius:2px;background:var(--line2);overflow:hidden}
@@ -379,18 +386,19 @@ const about=[
   ["O que faço","Trabalho com análise de dados, transformando números em decisões. Ler me ajuda a fazer perguntas melhores."],
   ["O que busco","Trocar indicações. Se um livro mudou seu jeito de pensar, quero saber qual foi."]
 ];
-/* Livro: [título, autor, nota, resenha (opcional), capa (opcional: "capas/arquivo.jpg")] */
+/* Livro: [título, autor, nota (null = lendo agora), resenha (opcional), capa (opcional: "capas/arquivo.webp")] */
 const shelves=[
  {nome:"Ideias & mundo",livros:[
-  ["Essencialismo","Greg McKeown",4.8,"Fazer menos, porém melhor. Um convite a dizer não ao que só ocupa espaço."],
-  ["Alcançando Excelência em Vendas: SPIN Selling","Neil Rackham",4.7,"Vender começa pelas perguntas certas. O método nasceu de milhares de reuniões observadas."],
+  ["Essencialismo","Greg McKeown",4.8,"Fazer menos, porém melhor. Um convite a dizer não ao que só ocupa espaço.","capas/essencialismo.webp"],
+  ["Alcançando Excelência em Vendas: SPIN Selling","Neil Rackham",4.7,"Vender começa pelas perguntas certas. O método nasceu de milhares de reuniões observadas.","capas/spin-selling.webp"],
   ["1984","George Orwell",4.9,"Um Estado que vigia tudo e reescreve o passado. Assusta mais a cada ano que passa."],
   ["Prisioneiros da Geografia","Tim Marshall",4.6,"Rios, montanhas e mares explicam mais da política mundial do que parece."],
-  ["A Psicologia Financeira","Morgan Housel",4.9,"Dinheiro tem mais a ver com comportamento do que com planilha. Curtas histórias que mudam a forma de poupar."],
-  ["Em Nome do Povo","Bruno Perini",4.5,"A história do dinheiro e de como a inflação come o seu poder de compra. Claro, irônico e bom para começar."],
+  ["A Psicologia Financeira","Morgan Housel",4.9,"Dinheiro tem mais a ver com comportamento do que com planilha. Curtas histórias que mudam a forma de poupar.","capas/psicologia-financeira.webp"],
+  ["Em Nome do Povo","Bruno Perini",4.5,"A história do dinheiro e de como a inflação come o seu poder de compra. Claro, irônico e bom para começar.","capas/em-nome-do-povo.webp"],
   ["A Arte da Guerra","Sun Tzu",4.7,"Estratégia escrita há mais de dois mil anos que ainda serve para negócios e para a vida."],
   ["O Homem Mais Rico da Babilônia","George S. Clason",4.8,"Parábolas antigas sobre guardar uma parte do que se ganha e fazer o dinheiro trabalhar."]]},
  {nome:"Fé, mistério & filosofia",livros:[
+  ["Odisseia","Homero",null,"Ulisses leva dez anos para voltar de Troia para casa. A aventura que deu origem a tantas outras.","capas/odisseia.webp"],
   ["Bíblia Ilustrada","Vários autores",5.0,"As histórias bíblicas acompanhadas de ilustrações que ajudam a enxergar cada cena."],
   ["O Deus que Destrói Sonhos","Rodrigo Bibo",4.8,"E se Deus frustrar seus planos para te dar algo maior? Uma leitura que incomoda e consola."],
   ["Ed & Lorraine Warren: Lugar Sombrio","Carmen Reed, Al Snedeker & Ray Garton",4.7,"Uma família se muda para uma antiga casa funerária em Connecticut. O que vem depois é difícil de explicar."],
@@ -404,33 +412,33 @@ const shelves=[
   ["Cartas de um Diabo a seu Aprendiz","C. S. Lewis",4.9,"Um demônio veterano ensina o sobrinho a desviar um homem comum. Irônico e certeiro."],
   ["O Peso da Glória","C. S. Lewis",4.8,"Sermões e ensaios de C. S. Lewis sobre desejo, fé e o valor de cada pessoa."],
   ["Como se Tornar um Cristão Inútil","Rodrigo Bibo",4.7,"Uma provocação contra a busca por palco na fé. Servir sem esperar medalha, a partir dos servos inúteis de Lucas 17."],
-  ["O Andar do Bêbado","Leonard Mlodinow",4.7,"Como o acaso governa mais da nossa vida do que gostamos de admitir."],
-  ["O Príncipe","Nicolau Maquiavel",4.6,"Manual cru sobre conquistar e manter o poder. Explica muita coisa que se vê até hoje."],
+  ["O Andar do Bêbado","Leonard Mlodinow",4.7,"Como o acaso governa mais da nossa vida do que gostamos de admitir.","capas/o-andar-do-bebado.webp"],
+  ["O Príncipe","Nicolau Maquiavel",4.6,"Manual cru sobre conquistar e manter o poder. Explica muita coisa que se vê até hoje.","capas/o-principe.webp"],
   ["Manual","Epicteto",4.8,"Epicteto separa o que depende de nós do que não depende. Cabe no bolso e dura a vida inteira."],
-  ["Meditações","Marco Aurélio",4.9,"Anotações pessoais de um imperador romano tentando ser uma pessoa melhor."],
-  ["Arrume a Sua Cama","William H. McRaven",4.5,"Lições do treinamento dos SEALs da Marinha americana. Mudanças grandes começam por hábitos pequenos."],
+  ["Meditações","Marco Aurélio",4.9,"Anotações pessoais de um imperador romano tentando ser uma pessoa melhor.","capas/meditacoes.webp"],
+  ["Arrume a Sua Cama","William H. McRaven",4.5,"Lições do treinamento dos SEALs da Marinha americana. Mudanças grandes começam por hábitos pequenos.","capas/arrume-a-sua-cama.webp"],
   ["18 Princípios para Você Evoluir","Charles Mendlowicz",4.4,"O Economista Sincero reúne o que aprendeu sobre disciplina, dinheiro e propósito. Capítulos curtos, fáceis de aplicar."],
-  ["Amor & Gelato","Jenna Evans Welch",4.5,"Uma viagem à Itália, o diário da mãe e um segredo de família. Leve e doce."]]},
+  ["Amor & Gelato","Jenna Evans Welch",4.5,"Uma viagem à Itália, o diário da mãe e um segredo de família. Leve e doce.","capas/amor-e-gelato.webp"]]},
  {nome:"Código & mente",livros:[
-  ["Armas e Ferramentas","Brad Smith e Carol Ann Browne",4.5,"O presidente da Microsoft discute o que a tecnologia resolve e o que ela coloca em risco."],
-  ["Android Essencial com Kotlin","Ricardo R. Lecheta",4.6,"Guia prático para criar apps Android em Kotlin, do básico à publicação."],
-  ["Entendendo Algoritmos","Aditya Y. Bhargava",4.9,"Algoritmos explicados com desenhos e exemplos simples. Faz sentido até para quem está começando."],
-  ["Código Limpo","Robert C. Martin",4.9,"Código é lido muito mais vezes do que escrito. Regras para escrever o tipo que dá gosto manter."],
+  ["Armas e Ferramentas","Brad Smith e Carol Ann Browne",4.5,"O presidente da Microsoft discute o que a tecnologia resolve e o que ela coloca em risco.","capas/armas-e-ferramentas.webp"],
+  ["Android Essencial com Kotlin","Ricardo R. Lecheta",4.6,"Guia prático para criar apps Android em Kotlin, do básico à publicação.","capas/android-kotlin.webp"],
+  ["Entendendo Algoritmos","Aditya Y. Bhargava",4.9,"Algoritmos explicados com desenhos e exemplos simples. Faz sentido até para quem está começando.","capas/entendendo-algoritmos.webp"],
+  ["Código Limpo","Robert C. Martin",4.9,"Código é lido muito mais vezes do que escrito. Regras para escrever o tipo que dá gosto manter.","capas/codigo-limpo.webp"],
   ["O Ego é Seu Inimigo","Ryan Holiday",4.7,"Como o ego atrapalha na subida, no sucesso e na queda. Estoicismo aplicado."],
   ["Nada Pode Me Ferir","David Goggins",4.8,"Goggins conta como saiu de uma vida difícil para provas extremas. Pura disciplina."],
   ["Ultra-aprendizado","Scott H. Young",4.7,"Projetos intensos para aprender rápido o que importa, com exemplos de quem fez."],
   ["Como Chegar ao Sim","Roger Fisher, William Ury e Bruce Patton",4.7,"Negociar pelos interesses, e não pelas posições. O método de Harvard que virou referência."],
   ["As 48 Leis do Poder","Robert Greene",4.6,"Regras do poder tiradas de séculos de história. Serve para usar ou para se defender."],
-  ["Brevidade Inteligente","Jim VandeHei, Mike Allen e Roy Schwartz",4.5,"Escrever menos e dizer mais. Os fundadores do Axios ensinam a ir direto ao ponto."],
+  ["Brevidade Inteligente","Jim VandeHei, Mike Allen e Roy Schwartz",4.5,"Escrever menos e dizer mais. Os fundadores do Axios ensinam a ir direto ao ponto.","capas/brevidade-inteligente.webp"],
   ["Mindset","Carol S. Dweck",4.7,"A diferença entre achar que talento é fixo e saber que ele cresce com esforço."],
   ["As Armas da Persuasão","Robert B. Cialdini",4.8,"Os gatilhos que fazem a gente dizer sim, e como perceber quando estão sendo usados."],
   ["Como Fazer Amigos e Influenciar Pessoas","Dale Carnegie",4.9,"Escrito em 1936 e ainda atual: interesse genuíno pelos outros abre portas."],
   ["Inteligência Emocional","Daniel Goleman",4.7,"Lidar com as próprias emoções conta tanto quanto o QI para ir longe."],
-  ["Comece pelo Porquê","Simon Sinek",4.6,"Pessoas seguem quem sabe por que faz o que faz. A ideia é simples e muda muito."],
-  ["O Que Todo Corpo Fala","Joe Navarro",4.7,"Um ex-agente do FBI ensina a ler o que o corpo diz quando a boca se cala."],
-  ["Como Falar em Público e Encantar as Pessoas","Dale Carnegie",4.6,"Dicas práticas para perder o medo do palco e prender a atenção de quem ouve."],
-  ["O Poder do Hábito","Charles Duhigg",4.8,"Gatilho, rotina e recompensa. Entender o ciclo é o primeiro passo para mudar um hábito."],
-  ["Negocie Como Se Sua Vida Dependesse Disso","Chris Voss e Tahl Raz",4.9,"Um ex-negociador de sequestros do FBI mostra como empatia vence argumentos."]]}
+  ["Comece pelo Porquê","Simon Sinek",4.6,"Pessoas seguem quem sabe por que faz o que faz. A ideia é simples e muda muito.","capas/comece-pelo-porque.webp"],
+  ["O Que Todo Corpo Fala","Joe Navarro",4.7,"Um ex-agente do FBI ensina a ler o que o corpo diz quando a boca se cala.","capas/o-que-todo-corpo-fala.webp"],
+  ["Como Falar em Público e Encantar as Pessoas","Dale Carnegie",4.6,"Dicas práticas para perder o medo do palco e prender a atenção de quem ouve.","capas/falar-em-publico.webp"],
+  ["O Poder do Hábito","Charles Duhigg",4.8,"Gatilho, rotina e recompensa. Entender o ciclo é o primeiro passo para mudar um hábito.","capas/o-poder-do-habito.webp"],
+  ["Negocie Como Se Sua Vida Dependesse Disso","Chris Voss e Tahl Raz",4.9,"Um ex-negociador de sequestros do FBI mostra como empatia vence argumentos.","capas/negocie.webp"]]}
 ];
 const tastes=[
   ["01 / Música","Do refrão ao solo",["Pop","Rock"]],
@@ -448,7 +456,7 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const ESC={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"};
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>ESC[c]);
 const safeImg=u=>/^(capas\/)?[\w\-. ]+\.(jpe?g|png|webp|avif)$/i.test(u||"")?u:"";
-const num=n=>{n=+n;return isFinite(n)?Math.max(0,Math.min(5,n)):0};
+const num=n=>{if(n===null||n===undefined||n==="")return null;n=+n;return isFinite(n)?Math.max(0,Math.min(5,n)):null};
 const SC=["var(--c0)","var(--c1)","var(--c2)"];
 const fine=matchMedia("(hover:hover) and (pointer:fine)").matches;
 const calm=matchMedia("(prefers-reduced-motion:reduce)").matches;
@@ -466,7 +474,7 @@ tabBtns.forEach((b,i)=>b.onclick=()=>{tabBtns.forEach(x=>{x.classList.toggle("on
   pt.classList.add("sw");setTimeout(()=>{pk.textContent=about[i][0];pt.textContent=about[i][1];pt.classList.remove("sw")},calm?0:220)});
 
 /* livros: estantes */
-const total=shelves.reduce((s,x)=>s+x.livros.length,0);
+const total=shelves.reduce((s,x)=>s+x.livros.filter(b=>num(b[2])!==null).length,0);
 const st=$("#shelfTabs"),pill=$(".stabs .pillbg");
 st.insertAdjacentHTML("beforeend",shelves.map((s,i)=>`<button role="tab" data-s="${i}" style="--sc:${SC[i]}"><i></i>${esc(s.nome)}<span>${s.livros.length}</span></button>`).join(""));
 const sBtns=$$("#shelfTabs button");
@@ -474,8 +482,8 @@ const movePill=i=>{const b=sBtns[i];pill.style.width=b.offsetWidth+"px";pill.sty
 let cur=0;
 function setShelf(i){cur=i;sBtns.forEach((b,k)=>{b.classList.toggle("on",k===i);b.setAttribute("aria-selected",k===i)});movePill(i);
   $("#books").innerHTML=shelves[i].livros.map(([t,a,n,r,c],k)=>{t=esc(t);a=esc(a);n=num(n);r=esc(r);c=safeImg(c);return `<article class="book trace spot show" style="--sc:${SC[i]};--i:${Math.min(k,14)}">
-    <div class="cover"${c?` style="background:url('${c}') center/cover"`:""}>${c?"":`<span>${t}</span><i>${a.split(/,| e | &amp; /)[0]}</i>`}</div>
-    <div class="rate"><div class="bar"><b style="--r:${n}"></b></div>${n.toFixed(1)}</div>
+    <div class="cover${c?" has-img":""}">${c?`<img src="${c}" alt="Capa de ${t}" width="720" height="1280" loading="lazy" decoding="async">`:`<span>${t}</span><i>${a.split(/,| e | &amp; /)[0]}</i>`}</div>
+    ${n===null?`<div class="rate reading"><i></i>Lendo agora</div>`:`<div class="rate"><div class="bar"><b style="--r:${n}"></b></div>${n.toFixed(1)}</div>`}
     <h3>${t}</h3><p class="au">${a}</p><p class="rev">${r||"Resenha em breve."}</p></article>`}).join("")}
 sBtns.forEach((b,i)=>b.onclick=()=>setShelf(i));
 setShelf(0);

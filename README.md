@@ -12,7 +12,9 @@ Página estática em um único `index.html`, sem build e sem dependências.
 
 Livros, resenhas, gostos e hobbies ficam no bloco `EDITE SEUS DADOS AQUI`, dentro do `<script>` no fim do `index.html`.
 
-Livro: `["Título", "Autor", nota, "resenha", "capas/arquivo.jpg"]` (resenha e capa são opcionais).
+Livro: `["Título", "Autor", nota, "resenha", "capas/arquivo.webp"]` (resenha e capa são opcionais). Nota `null` mostra "Lendo agora".
+
+Capas ficam em `capas/`, em 2:3 (600×900, .webp). Livro sem capa ganha uma capa gerada com título e autor.
 
 ## Deploy
 

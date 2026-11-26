@@ -12,7 +12,9 @@ Página estática em um único `index.html`, sem build e sem dependências.
 
 Livros, resenhas, gostos e hobbies ficam no bloco `EDITE SEUS DADOS AQUI`, dentro do `<script>` no fim do `index.html`.
 
-Livro: `["Título", "Autor", nota, "resenha", "capas/arquivo.webp"]` (resenha e capa são opcionais). Nota `null` mostra "Lendo agora".
+Livro: `{titulo, autor, nota, ano, capa, resumo, resenha}`. Nota `null` mostra "Lendo agora"; `ano`, `capa` e `resenha` são opcionais. Clicar num livro abre a ficha com tudo isso.
+
+A imagem de prévia do link é `og.png` (1200×630). A filosofia visual dela está em [arte/marginalia.md](arte/marginalia.md).
 
 Capas ficam em `capas/`, em 2:3 (600×900, .webp). Livro sem capa ganha uma capa gerada com título e autor. Ao trocar uma capa por outra com o mesmo nome, aumente `CAPAS_V` no `index.html` para os navegadores baixarem a nova.
 

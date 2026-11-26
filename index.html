@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Versão alpha do site do Mateus Santos: livros com resenhas curtas, músicas, séries e hobbies.">
+<meta name="description" content="Versão alpha do site do Mateus Santos: 54 livros com resumo, resenha e nota, além de músicas, séries e hobbies.">
 <meta name="theme-color" content="#0a0c0a">
 <meta name="color-scheme" content="dark">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Mateus Santos">
-<meta property="og:description" content="Versão alpha. Leio, anoto e conto aqui: 54 livros com resenhas curtas.">
+<meta property="og:description" content="Versão alpha. Leio, anoto e conto aqui: 54 livros com resumo, resenha e nota.">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:url" content="https://sobremim-three.vercel.app/">
-<meta property="og:image" content="https://sobremim-three.vercel.app/foto.jpg">
-<meta property="og:image:width" content="892">
-<meta property="og:image:height" content="1598">
-<meta property="og:image:alt" content="Mateus Santos">
+<meta property="og:image" content="https://sobremim-three.vercel.app/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Mateus Santos. Leio, anoto e conto aqui. Os 54 livros da estante como barras coloridas.">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://sobremim-three.vercel.app/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0c0a'/%3E%3Crect x='11' y='11' width='10' height='10' fill='%23c8f37f' transform='rotate(45 16 16)'/%3E%3C/svg%3E">
@@ -37,6 +37,7 @@
   --sans:"Geist",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
   --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
   --mono:"Geist Mono",ui-monospace,Consolas,monospace;
+  --fret1:#16130f; --fret2:#0f0d0a; --str1:#e4ddcd; --str2:#8f887a; --term:#070807;
   --ease:cubic-bezier(.2,.7,.1,1);
   color-scheme:dark;
 }
@@ -181,7 +182,7 @@ h2{font-weight:400;font-size:clamp(34px,4.8vw,58px);line-height:1.02;letter-spac
 .count b{font-family:var(--serif);font-weight:400;font-size:64px;line-height:.9;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
 .count .mono{color:var(--mute)}
 #books{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px;margin-top:28px}
-.book{--tc:var(--sc);display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:14px;background:var(--panel);border:1px solid var(--line);transition:transform .5s var(--ease),border-color .3s}
+.book{--tc:var(--sc);appearance:none;font:inherit;color:inherit;text-align:left;cursor:pointer;width:100%;display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:14px;background:var(--panel);border:1px solid var(--line);transition:transform .5s var(--ease),border-color .3s}
 .book.show{animation:bookin .7s var(--ease) both;animation-delay:calc(var(--i) * 40ms)}
 @keyframes bookin{from{opacity:0;transform:translateY(16px)}}
 .cover{position:relative;aspect-ratio:2/3;max-width:100%;border-radius:8px;overflow:hidden;padding:20px 14px 16px 26px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid var(--line2);
@@ -205,7 +206,6 @@ h2{font-weight:400;font-size:clamp(34px,4.8vw,58px);line-height:1.02;letter-spac
 @keyframes grow{from{width:0}}
 .book h3{font-size:15px;font-weight:500;line-height:1.3;letter-spacing:-.01em}
 .book .au{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--mute)}
-.book .rev{font-size:13.5px;line-height:1.5;color:var(--mute)}
 
 /* FAIXA DE TÍTULOS */
 .marquee{border-top:1px solid var(--line);overflow:hidden;padding:26px 0;white-space:nowrap;-webkit-mask:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
@@ -232,13 +232,76 @@ h2{font-weight:400;font-size:clamp(34px,4.8vw,58px);line-height:1.02;letter-spac
 .step li{padding:4px 12px;border:1px solid var(--line2);border-radius:999px;font-size:14px;color:var(--mute);transition:color .3s,border-color .3s,transform .3s var(--ease)}
 @media (hover:hover){.step li:hover{color:var(--txt);border-color:var(--acc);transform:translateY(-2px)}}
 
-/* HOBBIES */
-.hobs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:52px}
-.hob{min-height:210px;display:flex;flex-direction:column;justify-content:space-between;gap:24px;padding:26px 24px;border-radius:14px;border:1px solid var(--line);background:var(--panel);transition:transform .5s var(--ease)}
-@media (hover:hover){.hob:hover{transform:translateY(-4px)}}
-.hob .mono{color:var(--dim)}
+/* HOBBIES: três brinquedos. Cordas que tocam, terminal que responde, estante que se mexe */
+.hobs-lead{color:var(--mute);max-width:46ch;margin-top:18px}
+.hobs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:44px}
+.hob{position:relative;display:flex;flex-direction:column;gap:18px;padding:24px;border-radius:14px;border:1px solid var(--line);background:var(--panel);min-width:0}
+.hob-shelf{grid-column:1/-1}
+.hob header{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:baseline}
+.hob header .mono{color:var(--dim)}
 .hob h3{font-family:var(--serif);font-weight:400;font-size:34px;line-height:1.02;letter-spacing:-.01em}
-.hob p{color:var(--mute);font-size:14px;margin-top:8px}
+.hob header p{grid-column:2;color:var(--mute);font-size:14px}
+.hob .hint{color:var(--dim);margin-top:auto;transition:color .3s}
+.hob .hint.on{color:var(--acc)}
+/* cordas */
+.strings{position:relative;flex:1;min-height:184px;display:flex;flex-direction:column;justify-content:space-around;padding:10px 0;border-radius:10px;touch-action:none;user-select:none;-webkit-user-select:none;
+  background:repeating-linear-gradient(90deg,transparent 0 calc(16.6% - 1px),var(--line2) calc(16.6% - 1px) 16.6%),linear-gradient(180deg,var(--fret1),var(--fret2));border:1px solid var(--line2)}
+.str{appearance:none;border:0;background:none;padding:0 12px;position:relative;height:24px;display:flex;align-items:center;gap:12px;cursor:pointer;color:var(--dim);font:500 10px/1 var(--mono)}
+.str i{flex:1;height:var(--w);border-radius:2px;background:linear-gradient(var(--str1),var(--str2));box-shadow:0 1px 0 rgba(0,0,0,.6)}
+.str span{width:14px;text-align:right;transition:color .3s}
+.str.hit i{animation:vib .55s cubic-bezier(.2,.6,.3,1)}
+.str.hit span{color:var(--acc)}
+.str:focus-visible{outline-offset:-2px}
+@keyframes vib{10%{transform:translateY(2.6px)}22%{transform:translateY(-2.2px)}36%{transform:translateY(1.6px)}52%{transform:translateY(-1px)}70%{transform:translateY(.5px)}}
+/* terminal */
+.term{flex:1;display:flex;flex-direction:column;min-height:184px;max-height:260px;padding:14px 16px;border-radius:10px;border:1px solid var(--line2);background:var(--term);font:400 13px/1.6 var(--mono);color:var(--mute);cursor:text;overflow:hidden}
+.tout{flex:1;overflow-y:auto;white-space:pre-wrap;overflow-wrap:anywhere;scrollbar-width:none}
+.tout::-webkit-scrollbar{display:none}
+.tout .cmd{color:var(--txt)}
+.tout .cmd::before{content:"$ ";color:var(--acc)}
+.tout .err{color:var(--warm)}
+.tin{display:flex;gap:8px;align-items:center;color:var(--acc)}
+.tin input{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--txt);font:inherit;caret-color:var(--acc)}
+.term:focus-within{border-color:var(--dim)}
+/* estante de lombadas */
+.spines{display:flex;align-items:flex-end;gap:2px;padding:28px 4px 0;border-bottom:3px solid var(--line2);overflow-x:auto;scrollbar-width:thin;scrollbar-color:var(--line2) transparent}
+.spine{appearance:none;border:0;flex:none;width:var(--sw);height:var(--sh);padding:8px 0;border-radius:3px 3px 0 0;cursor:pointer;position:relative;
+  background:linear-gradient(90deg,color-mix(in srgb,var(--sc) 42%,var(--bg)),color-mix(in srgb,var(--sc) 22%,var(--bg)) 70%,color-mix(in srgb,var(--sc) 30%,var(--bg)));
+  border-top:2px solid color-mix(in srgb,var(--sc) 70%,transparent);transition:transform .35s var(--ease),filter .3s}
+.spine span{display:block;writing-mode:vertical-rl;transform:rotate(180deg);margin:auto;max-height:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font:400 11px/1 var(--serif);color:var(--txt);opacity:.82}
+@media (hover:hover){.spine:hover{transform:translateY(-10px);filter:brightness(1.25)}}
+.spine:focus-visible{outline-offset:2px}
+.spine.now{box-shadow:0 0 14px -2px var(--acc)}
+.spine.pull{transform:translateY(-26px);filter:brightness(1.4)}
+.shelf-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+
+/* JANELA DO LIVRO */
+html.lock{overflow:hidden}
+#bk{margin:auto;padding:0;border:1px solid var(--line2);border-radius:18px;background:var(--panel);color:var(--txt);width:min(940px,calc(100% - 32px));max-width:none;max-height:calc(100dvh - 48px);overflow:auto;overscroll-behavior:contain}
+#bk::backdrop{background:rgba(5,6,5,.74);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+#bk[open] .bk{animation:bkin .45s var(--ease) both}
+@keyframes bkin{from{opacity:0;transform:translateY(14px)}}
+.bk{--sc:var(--acc);display:grid;grid-template-columns:minmax(0,290px) minmax(0,1fr);gap:40px;padding:36px}
+.bk .cover{align-self:start;position:sticky;top:0}
+.bk-x{position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line2);background:var(--bg);color:var(--mute);cursor:pointer;display:grid;place-items:center;transition:color .3s,border-color .3s;z-index:3}
+.bk-x:hover{color:var(--txt);border-color:var(--mute)}
+.bk-x svg{width:14px;height:14px;stroke:currentColor;stroke-width:1.6;fill:none}
+.bk-shelf{display:flex;align-items:center;gap:8px;color:var(--mute);font-size:13px}
+.bk-shelf i{width:7px;height:7px;border-radius:50%;background:var(--sc)}
+.bk h3{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4vw,46px);line-height:1.02;letter-spacing:-.015em;margin:12px 48px 22px 0;text-wrap:balance}
+.bk dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:16px 0;border-block:1px solid var(--line)}
+.bk dt,.bk h4{font-size:13px;font-weight:400;color:var(--mute)}
+.bk dd{font-size:16px;margin-top:2px}
+.bk h4{margin-top:24px}
+.bk p{margin-top:6px;color:var(--txt);opacity:.9;text-wrap:pretty}
+.bk p.empty{color:var(--dim);opacity:1}
+.bk-nota{display:flex;align-items:center;gap:18px;margin-top:28px;padding:18px 20px;border-radius:12px;border:1px solid var(--line2);background:var(--bg)}
+.bk-nota>b{font-family:var(--serif);font-weight:400;font-size:52px;line-height:.9;color:var(--warm);font-variant-numeric:tabular-nums}
+.bk-nota small{font-size:13px;color:var(--mute);display:block}
+.bk-nota .bar{flex:none;height:3px}
+.bk-nota>div{flex:1;display:flex;flex-direction:column;gap:10px}
+.bk-nota.reading b{font-size:30px;color:var(--acc)}
+.bk-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:22px;color:var(--mute);font-size:13px}
 
 /* CONTATO */
 .contact{text-align:center;padding:130px 24px}
@@ -261,6 +324,16 @@ footer{border-top:1px solid var(--line);padding:22px 24px;display:flex;justify-c
   .node .ic{display:none}
   section{padding:72px 4px}
   .split,.taste,.pane,.hobs{grid-template-columns:1fr}
+  .hob-shelf{grid-column:auto}
+  .hob{padding:20px 16px}
+  .hob h3{font-size:28px}
+  .col.r .node:last-child{grid-column:1/-1}
+  #bk{width:100%;max-height:92dvh;margin:auto 0 0;border-radius:18px 18px 0 0;border-bottom:0}
+  #bk[open] .bk{animation-name:bksheet}
+  .bk{grid-template-columns:1fr;gap:22px;padding:24px 18px 28px}
+  .bk .cover{position:relative;width:150px;padding:14px 10px 10px 20px}
+  .bk h3{margin-right:40px}
+  .bk-nota b{font-size:44px}
   .split,.taste{gap:24px}
   .pane{padding:24px}
   .photo{justify-self:stretch;max-width:none}
@@ -270,7 +343,6 @@ footer{border-top:1px solid var(--line);padding:22px 24px;display:flex;justify-c
   .book h3{font-size:14px}
   .cover span{font-size:16px}
   .count b{font-size:48px}
-  .hob{min-height:0}
   .mq span{font-size:22px}
   nav{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(10,12,10,.94)}
   .stabs button{padding:7px 12px;font-size:12px}
@@ -283,6 +355,7 @@ footer{border-top:1px solid var(--line);padding:22px 24px;display:flex;justify-c
   .tabs button{font-size:10px}
   .btn{padding:10px 16px}
 }
+@keyframes bksheet{from{transform:translateY(40px);opacity:0}}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
   .rv{opacity:1;transform:none}
@@ -319,7 +392,6 @@ footer{border-top:1px solid var(--line);padding:22px 24px;display:flex;justify-c
       <div class="core"><svg viewBox="0 0 124 136" aria-hidden="true"><polygon points="62,2 122,35 122,101 62,134 2,101 2,35"/></svg><div class="hex"></div><b>MS</b></div>
       <div class="col r">
         <div class="node on trace"><span class="ic"><svg viewBox="0 0 16 16"><path d="M2 4.5h12v8H2zM6 14.5h4M5.5 1.5L8 4l2.5-2.5"/></svg></span><div>Série<small>Rick and Morty</small></div></div>
-        <div class="node off trace"><span class="ic"><svg viewBox="0 0 16 16"><path d="M2 3h12v10H2zM5 3v10M11 3v10M2 8h3M11 8h3"/></svg></span><div>Filme da semana<small>Nenhum por enquanto</small></div></div>
         <div class="node trace"><span class="ic"><svg viewBox="0 0 16 16"><path d="M6 12.5V3.5l7-1.5v9"/><circle cx="4.5" cy="12.5" r="1.5"/><circle cx="11.5" cy="11" r="1.5"/></svg></span><div>Hobby<small>Violão e guitarra</small></div></div>
       </div>
     </div>
@@ -368,8 +440,27 @@ footer{border-top:1px solid var(--line);padding:22px 24px;display:flex;justify-c
 
 <section id="hobbies">
   <div class="tag mono rv"><b>4</b>Hobbies</div>
-  <h2 class="rv">Quando fecho o livro.<em>Ou quase isso.</em></h2>
-  <div class="hobs" id="hobbyList"></div>
+  <div class="split">
+    <h2 class="rv">Quando fecho o livro.<em>Ou quase isso.</em></h2>
+    <p class="rv" style="--d:120ms">Três jeitos de passar o tempo. Pode mexer em tudo: as cordas tocam, o terminal responde e a estante deixa você puxar um livro.</p>
+  </div>
+  <div class="hobs">
+    <article class="hob hob-gtr rv">
+      <header><span class="mono">01</span><h3 data-h="0"></h3><p data-h="0"></p></header>
+      <div class="strings" id="strings" role="group" aria-label="Cordas do violão: toque para ouvir"></div>
+      <span class="mono hint" id="gtrHint">Toque numa corda para ligar o som</span>
+    </article>
+    <article class="hob hob-term rv" style="--d:110ms">
+      <header><span class="mono">02</span><h3 data-h="2"></h3><p data-h="2"></p></header>
+      <div class="term" id="term"><div class="tout" id="tout" role="log" aria-live="polite"></div><label class="tin"><span aria-hidden="true">$</span><input id="tin" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="send" aria-label="Digite um comando"></label></div>
+      <span class="mono hint">Experimente: ajuda, ls estante, sorteia</span>
+    </article>
+    <article class="hob hob-shelf rv" style="--d:220ms">
+      <header><span class="mono">03</span><h3 data-h="1"></h3><p data-h="1"></p></header>
+      <div class="spines" id="spines" role="list" aria-label="Lombadas de todos os livros"></div>
+      <div class="shelf-foot"><span class="mono hint">Clique numa lombada para abrir a ficha</span><button type="button" class="btn sm" id="randBook">Puxar um livro ao acaso</button></div>
+    </article>
+  </div>
 </section>
 
 <section id="contato" class="contact">
@@ -377,6 +468,11 @@ footer{border-top:1px solid var(--line);padding:22px 24px;display:flex;justify-c
   <h2 class="rv">Tem um livro que eu preciso ler?<em>Me conta.</em></h2>
   <div class="ctas rv"><a href="https://www.instagram.com/mateus_telles0/" target="_blank" rel="noopener" class="btn acc mag">@mateus_telles0 <span class="ar">→</span></a></div>
 </section>
+
+<dialog id="bk" aria-labelledby="bkT">
+  <button type="button" class="bk-x" id="bkX" aria-label="Fechar"><svg viewBox="0 0 14 14"><path d="M2 2l10 10M12 2L2 12"/></svg></button>
+  <div class="bk" id="bkBody"></div>
+</dialog>
 
 <footer class="mono"><span>© 2026 Mateus Santos</span><span>Versão alpha · v0.1</span></footer>
 </div>
@@ -388,75 +484,183 @@ const about=[
   ["O que faço","Trabalho com análise de dados, transformando números em decisões. Ler me ajuda a fazer perguntas melhores."],
   ["O que busco","Trocar indicações. Se um livro mudou seu jeito de pensar, quero saber qual foi."]
 ];
-/* Livro: [título, autor, nota (null = lendo agora), resenha (opcional), capa (opcional: "capas/arquivo.webp", 600x900)] */
+/* Livro: {titulo, autor, nota (null = lendo agora), ano, capa ("capas/arquivo.webp", 600x900), resumo, resenha}. Ano, capa e resenha são opcionais. */
 const shelves=[
  {nome:"Ideias & mundo",livros:[
-  ["Essencialismo","Greg McKeown",4.8,"Fazer menos, porém melhor. Um convite a dizer não ao que só ocupa espaço.","capas/essencialismo.webp"],
-  ["A Psicologia Financeira","Morgan Housel",4.9,"Dinheiro tem mais a ver com comportamento do que com planilha. Curtas histórias que mudam a forma de poupar.","capas/psicologia-financeira.webp"],
-  ["Em Nome do Povo","Bruno Perini",4.5,"A história do dinheiro e de como a inflação come o seu poder de compra. Claro, irônico e bom para começar.","capas/em-nome-do-povo.webp"],
-  ["O Homem Mais Rico da Babilônia","George S. Clason",4.8,"Parábolas antigas sobre guardar uma parte do que se ganha e fazer o dinheiro trabalhar."],
-  ["Prisioneiros da Geografia","Tim Marshall",4.6,"Rios, montanhas e mares explicam mais da política mundial do que parece."],
-  ["1984","George Orwell",4.9,"Um Estado que vigia tudo e reescreve o passado. Assusta mais a cada ano que passa."],
-  ["A Arte da Guerra","Sun Tzu",4.7,"Estratégia escrita há mais de dois mil anos que ainda serve para negócios e para a vida."],
-  ["O Príncipe","Nicolau Maquiavel",4.6,"Manual cru sobre conquistar e manter o poder. Explica muita coisa que se vê até hoje.","capas/o-principe.webp"],
-  ["As 48 Leis do Poder","Robert Greene",4.6,"Regras do poder tiradas de séculos de história. Serve para usar ou para se defender."],
-  ["Retórica","Aristóteles",4.6,"Caráter, emoção e lógica: os três caminhos para convencer alguém, descritos há mais de dois mil anos.","capas/retorica.webp"],
-  ["Meditações","Marco Aurélio",4.9,"Anotações pessoais de um imperador romano tentando ser uma pessoa melhor.","capas/meditacoes.webp"],
-  ["Manual","Epicteto",4.8,"Epicteto separa o que depende de nós do que não depende. Cabe no bolso e dura a vida inteira."],
-  ["O Andar do Bêbado","Leonard Mlodinow",4.7,"Como o acaso governa mais da nossa vida do que gostamos de admitir.","capas/o-andar-do-bebado.webp"],
-  ["Armas e Ferramentas","Brad Smith e Carol Ann Browne",4.5,"O presidente da Microsoft discute o que a tecnologia resolve e o que ela coloca em risco.","capas/armas-e-ferramentas.webp"],
-  ["Alcançando Excelência em Vendas: SPIN Selling","Neil Rackham",4.7,"Vender começa pelas perguntas certas. O método nasceu de milhares de reuniões observadas.","capas/spin-selling.webp"]]},
+  {titulo:"Essencialismo", autor:"Greg McKeown", nota:4.8, ano:"2014", capa:"capas/essencialismo.webp",
+   resumo:"McKeown defende que a maioria das coisas que ocupam a agenda é trivial. O livro ensina a separar o essencial do resto, a recusar convites e projetos sem culpa e a montar uma rotina que protege o que importa.",
+   resenha:"Fazer menos, porém melhor. Um convite a dizer não ao que só ocupa espaço."},
+  {titulo:"A Psicologia Financeira", autor:"Morgan Housel", nota:4.9, ano:"2020", capa:"capas/psicologia-financeira.webp",
+   resumo:"Dezenove capítulos curtos sobre como as pessoas lidam com dinheiro. Housel mostra que sorte, paciência e emoção pesam mais nos resultados financeiros do que fórmulas e planilhas.",
+   resenha:"Dinheiro tem mais a ver com comportamento do que com planilha. Curtas histórias que mudam a forma de poupar."},
+  {titulo:"Em Nome do Povo", autor:"Bruno Perini", nota:4.5, ano:"2024", capa:"capas/em-nome-do-povo.webp",
+   resumo:"Perini conta a história da moeda estatal e explica por que ela tende a perder valor com o tempo. O livro liga inflação, juros e gasto público ao dinheiro que some do bolso de quem trabalha.",
+   resenha:"A história do dinheiro e de como a inflação come o seu poder de compra. Claro, irônico e bom para começar."},
+  {titulo:"O Homem Mais Rico da Babilônia", autor:"George S. Clason", nota:4.8, ano:"1926",
+   resumo:"Parábolas passadas na antiga Babilônia ensinam regras simples de finanças pessoais: guardar parte do que se ganha, controlar gastos, investir com cuidado e fugir de promessas fáceis.",
+   resenha:"Parábolas antigas sobre guardar uma parte do que se ganha e fazer o dinheiro trabalhar."},
+  {titulo:"Prisioneiros da Geografia", autor:"Tim Marshall", nota:4.6, ano:"2015",
+   resumo:"Dez mapas explicam a política de regiões como Rússia, China, Estados Unidos e Oriente Médio. Marshall mostra como rios, montanhas, desertos e acesso ao mar limitam o que cada país pode fazer.",
+   resenha:"Rios, montanhas e mares explicam mais da política mundial do que parece."},
+  {titulo:"1984", autor:"George Orwell", nota:4.9, ano:"1949",
+   resumo:"Winston Smith trabalha reescrevendo notícias antigas para um governo que vigia cada passo da população. Quando começa a duvidar do Partido, ele descobre o preço de pensar por conta própria.",
+   resenha:"Um Estado que vigia tudo e reescreve o passado. Assusta mais a cada ano que passa."},
+  {titulo:"A Arte da Guerra", autor:"Sun Tzu", nota:4.7, ano:"Séc. V a.C.",
+   resumo:"Tratado chinês de estratégia militar em treze capítulos curtos. Fala de planejamento, de conhecer a si mesmo e ao adversário e de vencer evitando o combate sempre que possível.",
+   resenha:"Estratégia escrita há mais de dois mil anos que ainda serve para negócios e para a vida."},
+  {titulo:"O Príncipe", autor:"Nicolau Maquiavel", nota:4.6, ano:"1532", capa:"capas/o-principe.webp",
+   resumo:"Maquiavel escreve a um governante sobre como conquistar e manter o poder. Analisa exemplos da Itália renascentista e da Antiguidade sem se prender ao que seria moralmente desejável.",
+   resenha:"Manual cru sobre conquistar e manter o poder. Explica muita coisa que se vê até hoje."},
+  {titulo:"As 48 Leis do Poder", autor:"Robert Greene", nota:4.6, ano:"1998",
+   resumo:"Greene reúne 48 regras sobre poder e influência, cada uma ilustrada com episódios históricos. Mostra quando a lei funcionou, quando foi quebrada e o que aconteceu com quem a ignorou.",
+   resenha:"Regras do poder tiradas de séculos de história. Serve para usar ou para se defender."},
+  {titulo:"Retórica", autor:"Aristóteles", nota:4.6, ano:"Séc. IV a.C.", capa:"capas/retorica.webp",
+   resumo:"Aristóteles estuda a arte de persuadir. Divide a persuasão em caráter de quem fala, emoção de quem ouve e argumento, e analisa discursos políticos, jurídicos e de elogio.",
+   resenha:"Caráter, emoção e lógica: os três caminhos para convencer alguém, descritos há mais de dois mil anos."},
+  {titulo:"Meditações", autor:"Marco Aurélio", nota:4.9, ano:"Séc. II", capa:"capas/meditacoes.webp",
+   resumo:"Anotações que o imperador Marco Aurélio escreveu para si mesmo, sem intenção de publicar. Tratam de morte, dever, raiva e de como manter a calma diante do que não se pode controlar.",
+   resenha:"Anotações pessoais de um imperador romano tentando ser uma pessoa melhor."},
+  {titulo:"Manual", autor:"Epicteto", nota:4.8, ano:"Séc. II",
+   resumo:"Resumo dos ensinamentos de Epicteto, registrado por seu aluno Arriano. A ideia central é separar o que depende de nós do que não depende e cuidar apenas do primeiro.",
+   resenha:"Epicteto separa o que depende de nós do que não depende. Cabe no bolso e dura a vida inteira."},
+  {titulo:"O Andar do Bêbado", autor:"Leonard Mlodinow", nota:4.7, ano:"2008", capa:"capas/o-andar-do-bebado.webp",
+   resumo:"Mlodinow explica probabilidade e estatística com histórias do cotidiano. Mostra como o acaso influencia carreiras, mercados e julgamentos, e por que o cérebro insiste em ver padrões onde não há.",
+   resenha:"Como o acaso governa mais da nossa vida do que gostamos de admitir."},
+  {titulo:"Armas e Ferramentas", autor:"Brad Smith e Carol Ann Browne", nota:4.5, ano:"2019", capa:"capas/armas-e-ferramentas.webp",
+   resumo:"O presidente da Microsoft relata bastidores de casos sobre privacidade, ataques hackers, inteligência artificial e regulação. Defende que empresas de tecnologia assumam responsabilidade pelo que criam.",
+   resenha:"O presidente da Microsoft discute o que a tecnologia resolve e o que ela coloca em risco."},
+  {titulo:"Alcançando Excelência em Vendas: SPIN Selling", autor:"Neil Rackham", nota:4.7, ano:"1988", capa:"capas/spin-selling.webp",
+   resumo:"Baseado na análise de milhares de visitas de venda, o livro apresenta o método SPIN: perguntas de Situação, Problema, Implicação e Necessidade de solução, voltadas para vendas grandes e complexas.",
+   resenha:"Vender começa pelas perguntas certas. O método nasceu de milhares de reuniões observadas."}]},
  {nome:"Fé, mistério & clássicos",livros:[
-  ["Odisseia","Homero",null,"Ulisses leva dez anos para voltar de Troia para casa. A aventura que deu origem a tantas outras.","capas/odisseia.webp"],
-  ["Bíblia Ilustrada","Vários autores",5.0,"As histórias bíblicas acompanhadas de ilustrações que ajudam a enxergar cada cena."],
-  ["Bíblia Pastoral","Vários autores",5.0,"Tradução em linguagem acessível, com notas que ajudam a entender o contexto de cada texto."],
-  ["Confissões","Santo Agostinho",4.7,"Agostinho conta a própria vida como uma longa conversa com Deus. Honesto até nos tropeços."],
-  ["Cristianismo Puro e Simples","C. S. Lewis",4.9,"Nasceu de palestras no rádio durante a guerra. Defende o essencial da fé cristã com lógica e clareza.","capas/cristianismo-puro-e-simples.webp"],
-  ["Cartas de um Diabo a seu Aprendiz","C. S. Lewis",4.9,"Um demônio veterano ensina o sobrinho a desviar um homem comum. Irônico e certeiro.","capas/cartas-de-um-diabo.webp"],
-  ["O Peso da Glória","C. S. Lewis",4.8,"Sermões e ensaios de C. S. Lewis sobre desejo, fé e o valor de cada pessoa.","capas/o-peso-da-gloria.webp"],
-  ["Os Quatro Amores","C. S. Lewis",4.7,"Afeição, amizade, eros e caridade. Lewis mostra o que cada amor tem de bom e onde cada um pode estragar.","capas/os-quatro-amores.webp"],
-  ["O Deus que Destrói Sonhos","Rodrigo Bibo",4.8,"E se Deus frustrar seus planos para te dar algo maior? Uma leitura que incomoda e consola.","capas/o-deus-que-destroi-sonhos.webp"],
-  ["Como se Tornar um Cristão Inútil","Rodrigo Bibo",4.7,"Uma provocação contra a busca por palco na fé. Servir sem esperar medalha, a partir dos servos inúteis de Lucas 17.","capas/cristao-inutil.webp"],
-  ["Jesus Não é Quem Você Pensa","Tiago Mattes",4.5,"A partir do Evangelho de João, desmonta as versões de Jesus que a gente monta para caber nas próprias expectativas."],
-  ["A Divina Comédia: Inferno","Dante Alighieri",4.8,"Dante desce aos nove círculos do inferno. Poesia, castigo e política da época num só caminho."],
-  ["A Metamorfose","Franz Kafka",4.6,"Um homem acorda transformado em inseto, e o pior é como a família reage."],
-  ["Noites Brancas","Fiódor Dostoiévski",4.7,"Um sonhador solitário conhece uma moça numa ponte de São Petersburgo e passa quatro noites apaixonado por ela.","capas/noites-brancas.webp"],
-  ["Amor & Gelato","Jenna Evans Welch",4.5,"Uma viagem à Itália, o diário da mãe e um segredo de família. Leve e doce.","capas/amor-e-gelato.webp"],
-  ["Ed & Lorraine Warren: Demonologistas","Gerald Brittle",4.9,"Os bastidores dos casos mais conhecidos do casal Warren. Para ler com a luz acesa."],
-  ["Ed & Lorraine Warren: Lugar Sombrio","Carmen Reed, Al Snedeker & Ray Garton",4.7,"Uma família se muda para uma antiga casa funerária em Connecticut. O que vem depois é difícil de explicar."],
-  ["Ed & Lorraine Warren: Vidas Eternas","Robert Curran, Jack & Janet Smurl",4.6,"O caso da família Smurl, que relatou anos de ataques dentro da própria casa."]]},
+  {titulo:"Odisseia", autor:"Homero", nota:null, ano:"Séc. VIII a.C.", capa:"capas/odisseia.webp",
+   resumo:"Depois da guerra de Troia, Ulisses passa dez anos tentando voltar para casa, em Ítaca. Enquanto enfrenta monstros, deuses e tempestades, sua esposa Penélope resiste aos pretendentes que ocupam o palácio.",
+   resenha:"Ulisses leva dez anos para voltar de Troia para casa. A aventura que deu origem a tantas outras."},
+  {titulo:"Bíblia Ilustrada", autor:"Vários autores", nota:5, ano:null,
+   resumo:"Edição da Bíblia com ilustrações que acompanham as narrativas do Antigo e do Novo Testamento, da criação do mundo às primeiras igrejas.",
+   resenha:"As histórias bíblicas acompanhadas de ilustrações que ajudam a enxergar cada cena."},
+  {titulo:"Bíblia Pastoral", autor:"Vários autores", nota:5, ano:"1990",
+   resumo:"Tradução católica da Bíblia em português de linguagem simples, com introduções a cada livro e notas de rodapé que explicam o contexto histórico e social dos textos.",
+   resenha:"Tradução em linguagem acessível, com notas que ajudam a entender o contexto de cada texto."},
+  {titulo:"Confissões", autor:"Santo Agostinho", nota:4.7, ano:"c. 400",
+   resumo:"Agostinho narra a própria vida, da infância às dúvidas da juventude, até a conversão ao cristianismo. O livro é escrito como uma oração e termina com reflexões sobre memória e tempo.",
+   resenha:"Agostinho conta a própria vida como uma longa conversa com Deus. Honesto até nos tropeços."},
+  {titulo:"Cristianismo Puro e Simples", autor:"C. S. Lewis", nota:4.9, ano:"1952", capa:"capas/cristianismo-puro-e-simples.webp",
+   resumo:"Reunião de palestras que Lewis fez na rádio BBC durante a Segunda Guerra. Ele parte da ideia de uma lei moral comum a todos e chega aos pontos centrais da fé cristã, sem entrar em brigas entre denominações.",
+   resenha:"Nasceu de palestras no rádio durante a guerra. Defende o essencial da fé cristã com lógica e clareza."},
+  {titulo:"Cartas de um Diabo a seu Aprendiz", autor:"C. S. Lewis", nota:4.9, ano:"1942", capa:"capas/cartas-de-um-diabo.webp",
+   resumo:"Trinta e uma cartas de um demônio experiente para o sobrinho aprendiz, que tenta afastar um jovem inglês de Deus. A sátira mostra as tentações do dia a dia pelo avesso.",
+   resenha:"Um demônio veterano ensina o sobrinho a desviar um homem comum. Irônico e certeiro."},
+  {titulo:"O Peso da Glória", autor:"C. S. Lewis", nota:4.8, ano:"1949", capa:"capas/o-peso-da-gloria.webp",
+   resumo:"Coletânea de sermões e ensaios de Lewis. O texto que dá nome ao livro fala do desejo humano por algo que este mundo não satisfaz e do valor de cada pessoa que cruzamos.",
+   resenha:"Sermões e ensaios de C. S. Lewis sobre desejo, fé e o valor de cada pessoa."},
+  {titulo:"Os Quatro Amores", autor:"C. S. Lewis", nota:4.7, ano:"1960", capa:"capas/os-quatro-amores.webp",
+   resumo:"Lewis distingue quatro tipos de amor: afeição, amizade, eros e caridade. Analisa o que cada um tem de bom e como cada um pode se corromper quando vira o centro da vida.",
+   resenha:"Afeição, amizade, eros e caridade. Lewis mostra o que cada amor tem de bom e onde cada um pode estragar."},
+  {titulo:"O Deus que Destrói Sonhos", autor:"Rodrigo Bibo", nota:4.8, ano:"2021", capa:"capas/o-deus-que-destroi-sonhos.webp",
+   resumo:"Bibo questiona a ideia de que Deus existe para realizar os sonhos pessoais de cada um. A partir de histórias bíblicas e da própria vida, fala de frustração, propósito e confiança.",
+   resenha:"E se Deus frustrar seus planos para te dar algo maior? Uma leitura que incomoda e consola."},
+  {titulo:"Como se Tornar um Cristão Inútil", autor:"Rodrigo Bibo", nota:4.7, ano:"2025", capa:"capas/cristao-inutil.webp",
+   resumo:"Partindo da parábola dos servos inúteis, em Lucas 17, Bibo critica a busca por reconhecimento e palco dentro da igreja e propõe uma fé de serviço que não espera recompensa.",
+   resenha:"Uma provocação contra a busca por palco na fé. Servir sem esperar medalha, a partir dos servos inúteis de Lucas 17."},
+  {titulo:"Jesus Não é Quem Você Pensa", autor:"Tiago Mattes", nota:4.5, ano:null,
+   resumo:"Uma leitura do Evangelho de João que compara as expectativas das pessoas da época sobre Jesus com o que os textos mostram sobre quem ele era.",
+   resenha:"A partir do Evangelho de João, desmonta as versões de Jesus que a gente monta para caber nas próprias expectativas."},
+  {titulo:"A Divina Comédia: Inferno", autor:"Dante Alighieri", nota:4.8, ano:"c. 1314",
+   resumo:"Guiado pelo poeta Virgílio, Dante atravessa os nove círculos do inferno. Em cada um encontra pecadores, muitos deles figuras reais de Florença, cumprindo castigos ligados ao que fizeram em vida.",
+   resenha:"Dante desce aos nove círculos do inferno. Poesia, castigo e política da época num só caminho."},
+  {titulo:"A Metamorfose", autor:"Franz Kafka", nota:4.6, ano:"1915",
+   resumo:"Gregor Samsa, caixeiro-viajante que sustenta a família, acorda transformado em um inseto enorme. A novela acompanha como os pais e a irmã reagem à mudança dentro de casa.",
+   resenha:"Um homem acorda transformado em inseto, e o pior é como a família reage."},
+  {titulo:"Noites Brancas", autor:"Fiódor Dostoiévski", nota:4.7, ano:"1848", capa:"capas/noites-brancas.webp",
+   resumo:"Um jovem solitário de São Petersburgo, que vive mais na imaginação do que no mundo, conhece Nástienka numa noite de verão. Durante quatro noites, os dois conversam e trocam confidências.",
+   resenha:"Um sonhador solitário conhece uma moça numa ponte de São Petersburgo e passa quatro noites apaixonado por ela."},
+  {titulo:"Amor & Gelato", autor:"Jenna Evans Welch", nota:4.5, ano:"2016", capa:"capas/amor-e-gelato.webp",
+   resumo:"Depois da morte da mãe, Lina vai passar o verão na Itália e recebe o diário que a mãe escreveu quando morou lá. Seguindo as páginas, descobre lugares, pessoas e um segredo de família.",
+   resenha:"Uma viagem à Itália, o diário da mãe e um segredo de família. Leve e doce."},
+  {titulo:"Ed & Lorraine Warren: Demonologistas", autor:"Gerald Brittle", nota:4.9, ano:"1980",
+   resumo:"Brittle reúne relatos de casos investigados pelo casal Warren, que se apresentava como demonologista e médium. O livro descreve as etapas que eles atribuíam às infestações e possessões.",
+   resenha:"Os bastidores dos casos mais conhecidos do casal Warren. Para ler com a luz acesa."},
+  {titulo:"Ed & Lorraine Warren: Lugar Sombrio", autor:"Carmen Reed, Al Snedeker & Ray Garton", nota:4.7, ano:"1992",
+   resumo:"A família Snedeker se muda para uma casa em Connecticut que tinha funcionado como funerária. O livro reconstitui os fenômenos que a família relatou e a investigação dos Warren.",
+   resenha:"Uma família se muda para uma antiga casa funerária em Connecticut. O que vem depois é difícil de explicar."},
+  {titulo:"Ed & Lorraine Warren: Vidas Eternas", autor:"Robert Curran, Jack & Janet Smurl", nota:4.6, ano:"1988",
+   resumo:"A história da família Smurl, da Pensilvânia, que relatou anos de ataques dentro de casa nos anos 1970 e 1980, contada pelos próprios moradores com participação dos Warren.",
+   resenha:"O caso da família Smurl, que relatou anos de ataques dentro da própria casa."}]},
  {nome:"Código & mente",livros:[
-  ["Hábitos Atômicos","James Clear",4.9,"Melhorar 1% por dia parece pouco, mas se acumula. Um método prático para criar bons hábitos e largar os ruins.","capas/habitos-atomicos.webp"],
-  ["O Poder do Hábito","Charles Duhigg",4.8,"Gatilho, rotina e recompensa. Entender o ciclo é o primeiro passo para mudar um hábito.","capas/o-poder-do-habito.webp"],
-  ["Nação Dopamina","Anna Lembke",4.7,"Prazer demais deixa o cérebro em débito. Uma psiquiatra explica o vício moderno e como recuperar o equilíbrio.","capas/nacao-dopamina.webp"],
-  ["Mindset","Carol S. Dweck",4.7,"A diferença entre achar que talento é fixo e saber que ele cresce com esforço.","capas/mindset.webp"],
-  ["Inteligência Emocional","Daniel Goleman",4.7,"Lidar com as próprias emoções conta tanto quanto o QI para ir longe.","capas/inteligencia-emocional.webp"],
-  ["O Ego é Seu Inimigo","Ryan Holiday",4.7,"Como o ego atrapalha na subida, no sucesso e na queda. Estoicismo aplicado."],
-  ["Nada Pode Me Ferir","David Goggins",4.8,"Goggins conta como saiu de uma vida difícil para provas extremas. Pura disciplina."],
-  ["Arrume a Sua Cama","William H. McRaven",4.5,"Lições do treinamento dos SEALs da Marinha americana. Mudanças grandes começam por hábitos pequenos.","capas/arrume-a-sua-cama.webp"],
-  ["18 Princípios para Você Evoluir","Charles Mendlowicz",4.4,"O Economista Sincero reúne o que aprendeu sobre disciplina, dinheiro e propósito. Capítulos curtos, fáceis de aplicar."],
-  ["Ultra-aprendizado","Scott H. Young",4.7,"Projetos intensos para aprender rápido o que importa, com exemplos de quem fez."],
-  ["Entendendo Algoritmos","Aditya Y. Bhargava",4.9,"Algoritmos explicados com desenhos e exemplos simples. Faz sentido até para quem está começando.","capas/entendendo-algoritmos.webp"],
-  ["Código Limpo","Robert C. Martin",4.9,"Código é lido muito mais vezes do que escrito. Regras para escrever o tipo que dá gosto manter.","capas/codigo-limpo.webp"],
-  ["Android Essencial com Kotlin","Ricardo R. Lecheta",4.6,"Guia prático para criar apps Android em Kotlin, do básico à publicação.","capas/android-kotlin.webp"],
-  ["Brevidade Inteligente","Jim VandeHei, Mike Allen e Roy Schwartz",4.5,"Escrever menos e dizer mais. Os fundadores do Axios ensinam a ir direto ao ponto.","capas/brevidade-inteligente.webp"],
-  ["Como Falar em Público e Encantar as Pessoas","Dale Carnegie",4.6,"Dicas práticas para perder o medo do palco e prender a atenção de quem ouve.","capas/falar-em-publico.webp"],
-  ["Como Fazer Amigos e Influenciar Pessoas","Dale Carnegie",4.9,"Escrito em 1936 e ainda atual: interesse genuíno pelos outros abre portas."],
-  ["O Que Todo Corpo Fala","Joe Navarro",4.7,"Um ex-agente do FBI ensina a ler o que o corpo diz quando a boca se cala.","capas/o-que-todo-corpo-fala.webp"],
-  ["As Armas da Persuasão","Robert B. Cialdini",4.8,"Os gatilhos que fazem a gente dizer sim, e como perceber quando estão sendo usados.","capas/armas-da-persuasao.webp"],
-  ["Comece pelo Porquê","Simon Sinek",4.6,"Pessoas seguem quem sabe por que faz o que faz. A ideia é simples e muda muito.","capas/comece-pelo-porque.webp"],
-  ["Como Chegar ao Sim","Roger Fisher, William Ury e Bruce Patton",4.7,"Negociar pelos interesses, e não pelas posições. O método de Harvard que virou referência.","capas/como-chegar-ao-sim.webp"],
-  ["Negocie Como Se Sua Vida Dependesse Disso","Chris Voss e Tahl Raz",4.9,"Um ex-negociador de sequestros do FBI mostra como empatia vence argumentos.","capas/negocie.webp"]]}
+  {titulo:"Hábitos Atômicos", autor:"James Clear", nota:4.9, ano:"2018", capa:"capas/habitos-atomicos.webp",
+   resumo:"Clear explica como pequenas mudanças diárias se acumulam em grandes resultados. Apresenta quatro leis para criar hábitos (tornar óbvio, atraente, fácil e satisfatório) e o inverso para abandonar os ruins.",
+   resenha:"Melhorar 1% por dia parece pouco, mas se acumula. Um método prático para criar bons hábitos e largar os ruins."},
+  {titulo:"O Poder do Hábito", autor:"Charles Duhigg", nota:4.8, ano:"2012", capa:"capas/o-poder-do-habito.webp",
+   resumo:"Duhigg usa pesquisas e casos de empresas e pessoas para explicar o ciclo gatilho, rotina e recompensa. Mostra como hábitos se formam e como mudar a rotina mantendo o gatilho e a recompensa.",
+   resenha:"Gatilho, rotina e recompensa. Entender o ciclo é o primeiro passo para mudar um hábito."},
+  {titulo:"Nação Dopamina", autor:"Anna Lembke", nota:4.7, ano:"2021", capa:"capas/nacao-dopamina.webp",
+   resumo:"A psiquiatra Anna Lembke explica como o excesso de estímulos prazerosos, do celular à comida, desequilibra o sistema de recompensa do cérebro. Mistura neurociência com casos de pacientes.",
+   resenha:"Prazer demais deixa o cérebro em débito. Uma psiquiatra explica o vício moderno e como recuperar o equilíbrio."},
+  {titulo:"Mindset", autor:"Carol S. Dweck", nota:4.7, ano:"2006", capa:"capas/mindset.webp",
+   resumo:"Dweck compara duas formas de ver a própria capacidade: fixa, como algo com que se nasce, e de crescimento, como algo que se desenvolve. Mostra como cada uma afeta estudo, trabalho, esporte e relações.",
+   resenha:"A diferença entre achar que talento é fixo e saber que ele cresce com esforço."},
+  {titulo:"Inteligência Emocional", autor:"Daniel Goleman", nota:4.7, ano:"1995", capa:"capas/inteligencia-emocional.webp",
+   resumo:"Goleman reúne pesquisas sobre o cérebro e o comportamento para defender que reconhecer e controlar as próprias emoções pesa tanto quanto o QI no trabalho e na vida pessoal.",
+   resenha:"Lidar com as próprias emoções conta tanto quanto o QI para ir longe."},
+  {titulo:"O Ego é Seu Inimigo", autor:"Ryan Holiday", nota:4.7, ano:"2016",
+   resumo:"Holiday divide a vida em três fases, aspiração, sucesso e fracasso, e mostra como o ego atrapalha em cada uma. Usa exemplos históricos e a filosofia estoica.",
+   resenha:"Como o ego atrapalha na subida, no sucesso e na queda. Estoicismo aplicado."},
+  {titulo:"Nada Pode Me Ferir", autor:"David Goggins", nota:4.8, ano:"2018",
+   resumo:"David Goggins conta como saiu de uma infância de abuso e pobreza para virar Navy SEAL e ultramaratonista. Cada capítulo termina com um desafio para o leitor testar os próprios limites.",
+   resenha:"Goggins conta como saiu de uma vida difícil para provas extremas. Pura disciplina."},
+  {titulo:"Arrume a Sua Cama", autor:"William H. McRaven", nota:4.5, ano:"2017", capa:"capas/arrume-a-sua-cama.webp",
+   resumo:"O almirante William McRaven transforma dez lições do treinamento dos SEALs em conselhos curtos sobre disciplina, persistência e trabalho em equipe. Nasceu de um discurso de formatura.",
+   resenha:"Lições do treinamento dos SEALs da Marinha americana. Mudanças grandes começam por hábitos pequenos."},
+  {titulo:"18 Princípios para Você Evoluir", autor:"Charles Mendlowicz", nota:4.4, ano:"2023",
+   resumo:"O Economista Sincero reúne princípios sobre disciplina, dinheiro, carreira e propósito em capítulos curtos, com exemplos da própria trajetória.",
+   resenha:"O Economista Sincero reúne o que aprendeu sobre disciplina, dinheiro e propósito. Capítulos curtos, fáceis de aplicar."},
+  {titulo:"Ultra-aprendizado", autor:"Scott H. Young", nota:4.7, ano:"2019",
+   resumo:"Young estuda pessoas que aprenderam habilidades difíceis em pouco tempo por conta própria e extrai nove princípios, como prática direta, recuperação ativa e feedback rápido.",
+   resenha:"Projetos intensos para aprender rápido o que importa, com exemplos de quem fez."},
+  {titulo:"Entendendo Algoritmos", autor:"Aditya Y. Bhargava", nota:4.9, ano:"2016", capa:"capas/entendendo-algoritmos.webp",
+   resumo:"Introdução ilustrada a algoritmos como busca binária, ordenação, recursão, grafos e programação dinâmica. Usa desenhos e exemplos em Python em vez de matemática pesada.",
+   resenha:"Algoritmos explicados com desenhos e exemplos simples. Faz sentido até para quem está começando."},
+  {titulo:"Código Limpo", autor:"Robert C. Martin", nota:4.9, ano:"2008", capa:"capas/codigo-limpo.webp",
+   resumo:"Robert C. Martin apresenta práticas para escrever código legível: nomes claros, funções pequenas, comentários úteis, tratamento de erros e testes. A segunda parte refatora exemplos reais.",
+   resenha:"Código é lido muito mais vezes do que escrito. Regras para escrever o tipo que dá gosto manter."},
+  {titulo:"Android Essencial com Kotlin", autor:"Ricardo R. Lecheta", nota:4.6, ano:"2018", capa:"capas/android-kotlin.webp",
+   resumo:"Guia prático para criar aplicativos Android usando a linguagem Kotlin. Começa pela linguagem e avança por telas, listas, banco de dados, acesso à internet e publicação na loja.",
+   resenha:"Guia prático para criar apps Android em Kotlin, do básico à publicação."},
+  {titulo:"Brevidade Inteligente", autor:"Jim VandeHei, Mike Allen e Roy Schwartz", nota:4.5, ano:"2022", capa:"capas/brevidade-inteligente.webp",
+   resumo:"Os fundadores do Axios ensinam o método de escrita curta que usam no site: uma frase forte de abertura, contexto em poucas linhas e tópicos diretos, para e-mails, relatórios e apresentações.",
+   resenha:"Escrever menos e dizer mais. Os fundadores do Axios ensinam a ir direto ao ponto."},
+  {titulo:"Como Falar em Público e Encantar as Pessoas", autor:"Dale Carnegie", nota:4.6, ano:null, capa:"capas/falar-em-publico.webp",
+   resumo:"Carnegie reúne técnicas para perder o medo de falar diante de uma plateia: como se preparar, abrir e fechar uma fala, usar exemplos e manter a atenção de quem ouve.",
+   resenha:"Dicas práticas para perder o medo do palco e prender a atenção de quem ouve."},
+  {titulo:"Como Fazer Amigos e Influenciar Pessoas", autor:"Dale Carnegie", nota:4.9, ano:"1936",
+   resumo:"Carnegie apresenta princípios para lidar melhor com pessoas, como mostrar interesse sincero, lembrar nomes, ouvir mais do que falar e evitar críticas diretas.",
+   resenha:"Escrito em 1936 e ainda atual: interesse genuíno pelos outros abre portas."},
+  {titulo:"O Que Todo Corpo Fala", autor:"Joe Navarro", nota:4.7, ano:"2008", capa:"capas/o-que-todo-corpo-fala.webp",
+   resumo:"Joe Navarro, ex-agente do FBI, ensina a ler sinais não verbais: pés, pernas, mãos, rosto. Explica de onde vêm esses gestos e como interpretá-los com cautela.",
+   resenha:"Um ex-agente do FBI ensina a ler o que o corpo diz quando a boca se cala."},
+  {titulo:"As Armas da Persuasão", autor:"Robert B. Cialdini", nota:4.8, ano:"1984", capa:"capas/armas-da-persuasao.webp",
+   resumo:"Cialdini descreve seis princípios que levam as pessoas a dizer sim: reciprocidade, compromisso, aprovação social, afeição, autoridade e escassez. Mostra como são usados e como se defender.",
+   resenha:"Os gatilhos que fazem a gente dizer sim, e como perceber quando estão sendo usados."},
+  {titulo:"Comece pelo Porquê", autor:"Simon Sinek", nota:4.6, ano:"2009", capa:"capas/comece-pelo-porque.webp",
+   resumo:"Sinek apresenta o Círculo Dourado, com três camadas: porquê, como e o quê. Argumenta que líderes e empresas que comunicam primeiro o propósito inspiram mais lealdade, com exemplos como Apple e Martin Luther King.",
+   resenha:"Pessoas seguem quem sabe por que faz o que faz. A ideia é simples e muda muito."},
+  {titulo:"Como Chegar ao Sim", autor:"Roger Fisher, William Ury e Bruce Patton", nota:4.7, ano:"1981", capa:"capas/como-chegar-ao-sim.webp",
+   resumo:"Método do Projeto de Negociação de Harvard: separar as pessoas do problema, focar em interesses e não em posições, criar opções de ganho mútuo e usar critérios objetivos.",
+   resenha:"Negociar pelos interesses, e não pelas posições. O método de Harvard que virou referência."},
+  {titulo:"Negocie Como Se Sua Vida Dependesse Disso", autor:"Chris Voss e Tahl Raz", nota:4.9, ano:"2016", capa:"capas/negocie.webp",
+   resumo:"Chris Voss, ex-negociador de sequestros do FBI, adapta técnicas usadas em crises para o dia a dia: espelhamento, rotular emoções, perguntas calibradas e o valor de ouvir um não.",
+   resenha:"Um ex-negociador de sequestros do FBI mostra como empatia vence argumentos."}]}
 ];
 const tastes=[
   ["01 / Música","Do refrão ao solo",["Pop","Rock"]],
   ["02 / Filmes","Para rever sem culpa",["Ação","Aventura","Ficção"]],
-  ["03 / Séries","Um episódio vira cinco",["Ação","Aventura","Ficção"]]
+  ["03 / Séries","Um episódio vira cinco",["Rick and Morty"]]
 ];
 const hobbies=[
-  ["Violão e guitarra","Pop e rock, claro."],
-  ["Leitura","O motivo deste site existir."],
-  ["Programação","Construí esta página assim."]
+  ["Violão e guitarra","Pop e rock, claro. Passe o dedo nas cordas."],
+  ["Leitura","O motivo deste site existir. Todos os livros, lado a lado."],
+  ["Programação","Construí esta página assim. O terminal funciona de verdade."]
 ];
 /* ================================== */
 
@@ -483,33 +687,125 @@ tabBtns.forEach((b,i)=>b.onclick=()=>{tabBtns.forEach(x=>{x.classList.toggle("on
   pt.classList.add("sw");setTimeout(()=>{pk.textContent=about[i][0];pt.textContent=about[i][1];pt.classList.remove("sw")},calm?0:220)});
 
 /* livros: estantes */
-const total=shelves.reduce((s,x)=>s+x.livros.filter(b=>num(b[2])!==null).length,0);
+const total=shelves.reduce((s,x)=>s+x.livros.filter(b=>num(b.nota)!==null).length,0);
 const st=$("#shelfTabs"),pill=$(".stabs .pillbg");
 st.insertAdjacentHTML("beforeend",shelves.map((s,i)=>`<button role="tab" data-s="${i}" style="--sc:${SC[i]}"><i></i>${esc(s.nome)}<span>${s.livros.length}</span></button>`).join(""));
 const sBtns=$$("#shelfTabs button");
 const movePill=i=>{const b=sBtns[i];pill.style.width=b.offsetWidth+"px";pill.style.height=b.offsetHeight+"px";pill.style.transform=`translate(${b.offsetLeft}px,${b.offsetTop}px)`;pill.style.background=SC[i]};
 let cur=0;
+/* capa: imagem quando existe; senão, capa gerada com título e autor na cor da estante */
+const coverHTML=(b,si,eager)=>{const t=esc(b.titulo),c=safeImg(b.capa);return `<div class="cover${c?" has-img":""}" style="--sc:${SC[si]}"><span>${t}</span><i>${esc(b.autor.split(/,| e | & /)[0])}</i>${c?`<img src="${c}?v=${CAPAS_V}" alt="Capa de ${t}" width="600" height="900" decoding="async" fetchpriority="${eager?"high":"auto"}">`:""}</div>`};
+const wireCovers=root=>root.querySelectorAll(".cover img").forEach(im=>{const ok=()=>{im.classList.add("ok");im.parentElement.classList.add("loaded")},bad=()=>{im.parentElement.classList.remove("has-img");im.remove()};
+  if(im.complete){im.naturalWidth?ok():bad()}else{im.addEventListener("load",ok,{once:true});im.addEventListener("error",bad,{once:true})}});
 function setShelf(i){cur=i;sBtns.forEach((b,k)=>{b.classList.toggle("on",k===i);b.setAttribute("aria-selected",k===i)});movePill(i);
-  $("#books").innerHTML=shelves[i].livros.map(([t,a,n,r,c],k)=>{t=esc(t);a=esc(a);n=num(n);r=esc(r);c=safeImg(c);return `<article class="book trace spot show" style="--sc:${SC[i]};--i:${Math.min(k,14)}">
-    <div class="cover${c?" has-img":""}"><span>${t}</span><i>${a.split(/,| e | &amp; /)[0]}</i>${c?`<img src="${c}?v=${CAPAS_V}" alt="Capa de ${t}" width="600" height="900" decoding="async" fetchpriority="${k<4?"high":"auto"}">`:""}</div>
+  $("#books").innerHTML=shelves[i].livros.map((b,k)=>{const n=num(b.nota);return `<button type="button" class="book trace spot show" data-s="${i}" data-k="${k}" style="--sc:${SC[i]};--i:${Math.min(k,14)}" aria-haspopup="dialog">
+    ${coverHTML(b,i,k<4)}
     ${n===null?`<div class="rate reading"><i></i>Lendo agora</div>`:`<div class="rate"><div class="bar"><b style="--r:${n}"></b></div>${n.toFixed(1)}</div>`}
-    <h3>${t}</h3><p class="au">${a}</p><p class="rev">${r||"Resenha em breve."}</p></article>`}).join("");
-  /* capa: aparece quando carrega; se falhar, fica a capa gerada (título e autor) */
-  $$("#books img").forEach(im=>{const ok=()=>{im.classList.add("ok");im.parentElement.classList.add("loaded")},bad=()=>{im.parentElement.classList.remove("has-img");im.remove()};
-    if(im.complete){im.naturalWidth?ok():bad()}else{im.addEventListener("load",ok,{once:true});im.addEventListener("error",bad,{once:true})}})}
+    <h3>${esc(b.titulo)}</h3><p class="au">${esc(b.autor)}</p></button>`}).join("");
+  wireCovers($("#books"))}
+$("#books").addEventListener("click",e=>{const el=e.target.closest(".book");if(el)openBook(+el.dataset.s,+el.dataset.k,el)});
 sBtns.forEach((b,i)=>b.onclick=()=>setShelf(i));
 setShelf(0);
 /* pré-carrega as capas das outras estantes para a troca de aba ser instantânea */
-addEventListener("load",()=>{const go=()=>shelves.forEach(s=>s.livros.forEach(b=>{const c=safeImg(b[4]);if(c){const im=new Image();im.decoding="async";im.src=c+"?v="+CAPAS_V}}));
+addEventListener("load",()=>{const go=()=>shelves.forEach(s=>s.livros.forEach(b=>{const c=safeImg(b.capa);if(c){const im=new Image();im.decoding="async";im.src=c+"?v="+CAPAS_V}}));
   "requestIdleCallback" in window?requestIdleCallback(go,{timeout:3000}):setTimeout(go,1500)});
 
 /* faixa de títulos */
-const mqHtml=shelves.flatMap(s=>s.livros.map(b=>`<span>${esc(b[0])}</span><i></i>`)).join("");
+const mqHtml=shelves.flatMap(s=>s.livros.map(b=>`<span>${esc(b.titulo)}</span><i></i>`)).join("");
 $("#mq").innerHTML=mqHtml+mqHtml;
 
 /* gostos e hobbies */
 $("#tastes").insertAdjacentHTML("beforeend",tastes.map(s=>`<div class="step"><span class="mono">${esc(s[0])}</span><h4>${esc(s[1])}</h4><ul>${s[2].map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`).join(""));
-$("#hobbyList").innerHTML=hobbies.map((h,i)=>`<article class="hob trace spot rv" style="--d:${i*110}ms"><span class="mono">0${i+1}</span><div><h3>${esc(h[0])}</h3><p>${esc(h[1])}</p></div></article>`).join("");
+$$("[data-h]").forEach(el=>{const h=hobbies[+el.dataset.h]||["",""];el.textContent=el.tagName==="H3"?h[0]:h[1]});
+
+/* ===== janela do livro ===== */
+const dlg=$("#bk"),bkBody=$("#bkBody");let cs=0,ck=0,opener=null;
+function fillBook(){const sh=shelves[cs],b=sh.livros[ck],n=num(b.nota);
+  bkBody.style.setProperty("--sc",SC[cs]);
+  bkBody.innerHTML=`${coverHTML(b,cs,true)}
+  <div><div class="bk-shelf"><i></i>${esc(sh.nome)}</div>
+    <h3 id="bkT">${esc(b.titulo)}</h3>
+    <dl><div><dt>Autor</dt><dd>${esc(b.autor)}</dd></div><div><dt>Publicação</dt><dd>${b.ano?esc(b.ano):"Sem data confirmada"}</dd></div></dl>
+    <h4>Resumo</h4><p>${esc(b.resumo)}</p>
+    <h4>Minha resenha</h4>${b.resenha?`<p>${esc(b.resenha)}</p>`:`<p class="empty">Ainda escrevendo.</p>`}
+    ${n===null?`<div class="bk-nota reading"><div><small>Minha nota</small><b>Lendo agora</b></div></div>`
+      :`<div class="bk-nota"><b>${n.toFixed(1)}</b><div><small>Minha nota, de 0 a 5</small><div class="bar"><b style="--r:${n}"></b></div></div></div>`}
+    <div class="bk-nav"><button type="button" class="btn sm" data-go="-1"><span aria-hidden="true">←</span> Anterior</button><span>${ck+1} de ${sh.livros.length}</span><button type="button" class="btn sm" data-go="1">Próximo <span aria-hidden="true">→</span></button></div>
+  </div>`;
+  wireCovers(bkBody);dlg.scrollTop=0}
+function openBook(si,k,from){cs=si;ck=k;opener=from||document.activeElement;fillBook();
+  if(!dlg.open){dlg.showModal();document.documentElement.classList.add("lock")}}
+const step=d=>{const L=shelves[cs].livros.length;ck=(ck+d+L)%L;fillBook()};
+bkBody.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g)step(+g.dataset.go)});
+$("#bkX").onclick=()=>dlg.close();
+dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
+dlg.addEventListener("keydown",e=>{if(e.key==="ArrowRight")step(1);else if(e.key==="ArrowLeft")step(-1)});
+dlg.addEventListener("close",()=>{document.documentElement.classList.remove("lock");opener&&opener.focus&&opener.focus({preventScroll:true})});
+const allBooks=shelves.flatMap((s,si)=>s.livros.map((b,k)=>({b,si,k})));
+
+/* ===== hobby 1: cordas que tocam (som sintetizado no navegador, só depois do primeiro toque) ===== */
+(function(){const box=$("#strings"),hint=$("#gtrHint"),NOTES=[["E",329.63],["B",246.94],["G",196],["D",146.83],["A",110],["E",82.41]];
+  box.innerHTML=NOTES.map((n,i)=>`<button type="button" class="str" data-i="${i}" style="--w:${(1+i*.45).toFixed(2)}px" aria-label="Corda ${6-i}, nota ${n[0]}"><i></i><span>${n[0]}</span></button>`).join("");
+  let ac=null,last=-1;const bufs=[];
+  function synth(i){/* Karplus-Strong: ruído que vai sendo suavizado vira o som de uma corda */
+    const sr=ac.sampleRate,len=Math.floor(sr*1.8),buf=ac.createBuffer(1,len,sr),d=buf.getChannelData(0),N=Math.max(2,Math.round(sr/NOTES[i][1])),ring=new Float32Array(N);
+    for(let j=0;j<N;j++)ring[j]=Math.random()*2-1;let p=0;for(let t=0;t<len;t++){const q=(p+1)%N,v=ring[p];d[t]=v;ring[p]=.4985*(v+ring[q]);p=q}return buf}
+  function wake(){if(ac)return ac.resume();const A=window.AudioContext||window.webkitAudioContext;if(!A)return;ac=new A();hint.textContent="Som ligado. Passe o dedo nas cordas";hint.classList.add("on")}
+  function pluck(i){const el=box.children[i];el.classList.remove("hit");void el.offsetWidth;el.classList.add("hit");
+    if(!ac||ac.state!=="running")return;const src=ac.createBufferSource(),g=ac.createGain();src.buffer=bufs[i]||(bufs[i]=synth(i));g.gain.value=.32;src.connect(g).connect(ac.destination);src.start()}
+  const at=e=>{const el=document.elementFromPoint(e.clientX,e.clientY);const s=el&&el.closest(".str");return s&&box.contains(s)?+s.dataset.i:-1};
+  box.addEventListener("pointerdown",e=>{wake();if(e.target.hasPointerCapture&&e.target.hasPointerCapture(e.pointerId))e.target.releasePointerCapture(e.pointerId);last=at(e);if(last>=0)pluck(last)});
+  box.addEventListener("pointermove",e=>{const i=at(e);if(i>=0&&i!==last)pluck(i);last=i});
+  box.addEventListener("pointerleave",()=>last=-1);
+  box.addEventListener("click",e=>{const s=e.target.closest(".str");if(s&&e.detail===0){wake();pluck(+s.dataset.i)}});
+})();
+
+/* ===== hobby 2: terminal ===== */
+(function(){const out=$("#tout"),inp=$("#tin"),term=$("#term"),hist=[];let hi=0;
+  const line=(t,c)=>{const d=document.createElement("div");if(c)d.className=c;d.textContent=t;out.append(d);out.scrollTop=out.scrollHeight};
+  const lendo=()=>allBooks.filter(x=>num(x.b.nota)===null).map(x=>x.b.titulo+", de "+x.b.autor).join("\n")||"Nada no momento.";
+  const C={
+    ajuda:()=>"comandos: ls, ls estante, cat hobbies.txt, cat sobre.txt, lendo, sorteia, top, whoami, contato, limpar",
+    ls:a=>a==="estante"?shelves.map(s=>s.nome.padEnd(26," ")+s.livros.length+" livros").join("\n"):"estante/   hobbies.txt   sobre.txt",
+    cat:a=>a==="hobbies.txt"?hobbies.map(h=>"- "+h[0]).join("\n"):a==="sobre.txt"?about.map(x=>x[1]).join("\n\n"):a?"cat: "+a+": arquivo não encontrado":"cat: qual arquivo? tente cat sobre.txt",
+    lendo,
+    whoami:()=>"mateus",
+    top:()=>allBooks.filter(x=>num(x.b.nota)!==null).sort((x,y)=>y.b.nota-x.b.nota).slice(0,5).map(x=>x.b.nota.toFixed(1)+"  "+x.b.titulo).join("\n"),
+    sorteia:()=>{const x=allBooks[Math.floor(Math.random()*allBooks.length)];setTimeout(()=>openBook(x.si,x.k,inp),550);return "abrindo a ficha de "+x.b.titulo+"..."},
+    contato:()=>"@mateus_telles0 no Instagram",
+    limpar:()=>{out.textContent="";return null},
+    clear:()=>C.limpar(),help:()=>C.ajuda(),
+    sudo:()=>"permissão negada. aqui quem manda é a estante.",
+    echo:a=>a||""
+  };
+  function run(raw){const v=raw.trim();line(v,"cmd");if(!v)return;hist.push(v);hi=hist.length;
+    const [c,...r]=v.split(/\s+/),f=C[c.toLowerCase()];if(!f){line("comando não encontrado: "+c+". digite ajuda","err");return}
+    const res=f(r.join(" "));if(res!==null&&res!==undefined)line(res)}
+  inp.addEventListener("keydown",e=>{if(e.key==="Enter"){run(inp.value);inp.value=""}
+    else if(e.key==="ArrowUp"&&hi>0){inp.value=hist[--hi];e.preventDefault()}
+    else if(e.key==="ArrowDown"){hi=Math.min(hist.length,hi+1);inp.value=hist[hi]||""}});
+  term.addEventListener("click",()=>{if(!getSelection().toString())inp.focus({preventScroll:true})});
+  /* apresentação: digita dois comandos sozinho quando o terminal aparece */
+  const intro=["whoami","ls estante"];let started=false,stop=false;
+  inp.addEventListener("focus",()=>stop=true);
+  async function play(){for(const c of intro){if(stop)return;if(calm){run(c);continue}
+      const d=document.createElement("div");d.className="cmd";out.append(d);
+      for(const ch of c){if(stop){d.remove();return}d.textContent+=ch;await new Promise(r=>setTimeout(r,70+Math.random()*60))}
+      await new Promise(r=>setTimeout(r,250));d.remove();if(stop)return;run(c);await new Promise(r=>setTimeout(r,500))}}
+  new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting&&!started){started=true;o.disconnect();play()}}),{threshold:.5}).observe(term);
+})();
+
+/* ===== hobby 3: estante de lombadas ===== */
+(function(){const box=$("#spines");
+  const hash=t=>[...t].reduce((h,c)=>(h*31+c.charCodeAt(0))>>>0,7);
+  box.innerHTML=allBooks.map((x,j)=>{const h=hash(x.b.titulo),w=11+Math.min(9,Math.round(x.b.titulo.length/5)),hh=112+(h%54);
+    return `<button type="button" role="listitem" class="spine${num(x.b.nota)===null?" now":""}" data-j="${j}" style="--sc:${SC[x.si]};--sw:${w}px;--sh:${hh}px" aria-label="${esc(x.b.titulo)}, de ${esc(x.b.autor)}" title="${esc(x.b.titulo)}"><span>${esc(x.b.titulo)}</span></button>`}).join("");
+  box.addEventListener("click",e=>{const sp=e.target.closest(".spine");if(!sp)return;const x=allBooks[+sp.dataset.j];openBook(x.si,x.k,sp)});
+  $("#randBook").onclick=()=>{const j=Math.floor(Math.random()*allBooks.length),sp=box.children[j],x=allBooks[j];
+    box.querySelectorAll(".pull").forEach(z=>z.classList.remove("pull"));
+    box.scrollTo({left:sp.offsetLeft-box.clientWidth/2,behavior:calm?"auto":"smooth"});sp.classList.add("pull");
+    setTimeout(()=>{openBook(x.si,x.k,$("#randBook"));sp.classList.remove("pull")},calm?0:650)};
+})();
 
 /* revelar ao rolar */
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});

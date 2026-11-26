@@ -14,7 +14,7 @@ Livros, resenhas, gostos e hobbies ficam no bloco `EDITE SEUS DADOS AQUI`, dentr
 
 Livro: `["Título", "Autor", nota, "resenha", "capas/arquivo.webp"]` (resenha e capa são opcionais). Nota `null` mostra "Lendo agora".
 
-Capas ficam em `capas/`, em 2:3 (600×900, .webp). Livro sem capa ganha uma capa gerada com título e autor.
+Capas ficam em `capas/`, em 2:3 (600×900, .webp). Livro sem capa ganha uma capa gerada com título e autor. Ao trocar uma capa por outra com o mesmo nome, aumente `CAPAS_V` no `index.html` para os navegadores baixarem a nova.
 
 ## Deploy
 

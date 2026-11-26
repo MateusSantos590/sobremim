@@ -189,9 +189,9 @@ h2{font-weight:400;font-size:clamp(34px,4.8vw,58px);line-height:1.02;letter-spac
 .cover::before{content:"";position:absolute;left:12px;top:0;bottom:0;width:1px;background:color-mix(in srgb,var(--sc) 35%,transparent)}
 .cover::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.08) 50%,transparent 65%);transform:translateX(-100%);transition:transform .9s var(--ease)}
 @media (hover:hover){.book:hover .cover::after{transform:translateX(100%)}}
-.cover.has-img{padding:0;background:#0b0d0b}
-.cover.has-img::before{display:none}
-.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s var(--ease)}
+.cover.loaded::before{display:none}
+.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .5s ease,transform .9s var(--ease)}
+.cover img.ok{opacity:1}
 @media (hover:hover){.book:hover .cover img{transform:scale(1.04)}}
 .cover::after{z-index:1}
 .rate.reading{color:var(--acc);gap:8px}
@@ -482,11 +482,17 @@ const movePill=i=>{const b=sBtns[i];pill.style.width=b.offsetWidth+"px";pill.sty
 let cur=0;
 function setShelf(i){cur=i;sBtns.forEach((b,k)=>{b.classList.toggle("on",k===i);b.setAttribute("aria-selected",k===i)});movePill(i);
   $("#books").innerHTML=shelves[i].livros.map(([t,a,n,r,c],k)=>{t=esc(t);a=esc(a);n=num(n);r=esc(r);c=safeImg(c);return `<article class="book trace spot show" style="--sc:${SC[i]};--i:${Math.min(k,14)}">
-    <div class="cover${c?" has-img":""}">${c?`<img src="${c}" alt="Capa de ${t}" width="720" height="1280" loading="lazy" decoding="async">`:`<span>${t}</span><i>${a.split(/,| e | &amp; /)[0]}</i>`}</div>
+    <div class="cover${c?" has-img":""}"><span>${t}</span><i>${a.split(/,| e | &amp; /)[0]}</i>${c?`<img src="${c}" alt="Capa de ${t}" width="720" height="1280" decoding="async" fetchpriority="${k<4?"high":"auto"}">`:""}</div>
     ${n===null?`<div class="rate reading"><i></i>Lendo agora</div>`:`<div class="rate"><div class="bar"><b style="--r:${n}"></b></div>${n.toFixed(1)}</div>`}
-    <h3>${t}</h3><p class="au">${a}</p><p class="rev">${r||"Resenha em breve."}</p></article>`}).join("")}
+    <h3>${t}</h3><p class="au">${a}</p><p class="rev">${r||"Resenha em breve."}</p></article>`}).join("");
+  /* capa: aparece quando carrega; se falhar, fica a capa gerada (título e autor) */
+  $$("#books img").forEach(im=>{const ok=()=>{im.classList.add("ok");im.parentElement.classList.add("loaded")},bad=()=>{im.parentElement.classList.remove("has-img");im.remove()};
+    if(im.complete){im.naturalWidth?ok():bad()}else{im.addEventListener("load",ok,{once:true});im.addEventListener("error",bad,{once:true})}})}
 sBtns.forEach((b,i)=>b.onclick=()=>setShelf(i));
 setShelf(0);
+/* pré-carrega as capas das outras estantes para a troca de aba ser instantânea */
+addEventListener("load",()=>{const go=()=>shelves.forEach(s=>s.livros.forEach(b=>{const c=safeImg(b[4]);if(c){const im=new Image();im.decoding="async";im.src=c}}));
+  "requestIdleCallback" in window?requestIdleCallback(go,{timeout:3000}):setTimeout(go,1500)});
 
 /* faixa de títulos */
 const mqHtml=shelves.flatMap(s=>s.livros.map(b=>`<span>${esc(b[0])}</span><i></i>`)).join("");

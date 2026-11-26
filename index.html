@@ -466,6 +466,7 @@ const esc=v=>String(v??"").replace(/[&<>"']/g,c=>ESC[c]);
 const safeImg=u=>/^(capas\/)?[\w\-. ]+\.(jpe?g|png|webp|avif)$/i.test(u||"")?u:"";
 const num=n=>{if(n===null||n===undefined||n==="")return null;n=+n;return isFinite(n)?Math.max(0,Math.min(5,n)):null};
 const SC=["var(--c0)","var(--c1)","var(--c2)"];
+const CAPAS_V="3"; /* mude este número ao trocar capas */
 const fine=matchMedia("(hover:hover) and (pointer:fine)").matches;
 const calm=matchMedia("(prefers-reduced-motion:reduce)").matches;
 
@@ -490,7 +491,7 @@ const movePill=i=>{const b=sBtns[i];pill.style.width=b.offsetWidth+"px";pill.sty
 let cur=0;
 function setShelf(i){cur=i;sBtns.forEach((b,k)=>{b.classList.toggle("on",k===i);b.setAttribute("aria-selected",k===i)});movePill(i);
   $("#books").innerHTML=shelves[i].livros.map(([t,a,n,r,c],k)=>{t=esc(t);a=esc(a);n=num(n);r=esc(r);c=safeImg(c);return `<article class="book trace spot show" style="--sc:${SC[i]};--i:${Math.min(k,14)}">
-    <div class="cover${c?" has-img":""}"><span>${t}</span><i>${a.split(/,| e | &amp; /)[0]}</i>${c?`<img src="${c}" alt="Capa de ${t}" width="600" height="900" decoding="async" fetchpriority="${k<4?"high":"auto"}">`:""}</div>
+    <div class="cover${c?" has-img":""}"><span>${t}</span><i>${a.split(/,| e | &amp; /)[0]}</i>${c?`<img src="${c}?v=${CAPAS_V}" alt="Capa de ${t}" width="600" height="900" decoding="async" fetchpriority="${k<4?"high":"auto"}">`:""}</div>
     ${n===null?`<div class="rate reading"><i></i>Lendo agora</div>`:`<div class="rate"><div class="bar"><b style="--r:${n}"></b></div>${n.toFixed(1)}</div>`}
     <h3>${t}</h3><p class="au">${a}</p><p class="rev">${r||"Resenha em breve."}</p></article>`}).join("");
   /* capa: aparece quando carrega; se falhar, fica a capa gerada (título e autor) */
@@ -499,7 +500,7 @@ function setShelf(i){cur=i;sBtns.forEach((b,k)=>{b.classList.toggle("on",k===i);
 sBtns.forEach((b,i)=>b.onclick=()=>setShelf(i));
 setShelf(0);
 /* pré-carrega as capas das outras estantes para a troca de aba ser instantânea */
-addEventListener("load",()=>{const go=()=>shelves.forEach(s=>s.livros.forEach(b=>{const c=safeImg(b[4]);if(c){const im=new Image();im.decoding="async";im.src=c}}));
+addEventListener("load",()=>{const go=()=>shelves.forEach(s=>s.livros.forEach(b=>{const c=safeImg(b[4]);if(c){const im=new Image();im.decoding="async";im.src=c+"?v="+CAPAS_V}}));
   "requestIdleCallback" in window?requestIdleCallback(go,{timeout:3000}):setTimeout(go,1500)});
 
 /* faixa de títulos */

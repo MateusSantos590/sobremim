@@ -2,6 +2,10 @@
 
 Site pessoal do Mateus Santos: livros e resenhas, gostos, hobbies e contato.
 
+> **Versão alpha (v0.1).** O site ainda está mudando. Capas, resenhas e seções novas entram aos poucos, e o layout pode mudar entre uma visita e outra.
+
+No ar: https://sobremim-three.vercel.app
+
 Página estática em um único `index.html`, sem build e sem dependências.
 
 ## Editar conteúdo

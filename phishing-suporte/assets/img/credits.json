@@ -1,0 +1,80 @@
+{
+ "note": "Credits for the photographs in this folder: photos.mjs credits prints the footer block for the ones the pages use.",
+ "photos": [
+  {
+   "file": "photo-f30343877.jpg",
+   "files": [
+    "photo-f30343877-500.jpg",
+    "photo-f30343877-960.jpg",
+    "photo-f30343877-1280.jpg",
+    "photo-f30343877.jpg"
+   ],
+   "id": "f30343877",
+   "alt": "Backlit keyboard",
+   "by": "Colin",
+   "licence": "CC BY-SA 4.0",
+   "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Backlit_keyboard.jpg",
+   "source": "Wikimedia Commons"
+  },
+  {
+   "file": "photo-f134195982-960.jpg",
+   "files": [
+    "photo-f134195982-500.jpg",
+    "photo-f134195982-960.jpg"
+   ],
+   "id": "f134195982",
+   "alt": "NOIRLab HQ Server Racks (6V6A0375-CC)",
+   "by": "NOIRLab/NSF/AURA/T. Slovinský",
+   "licence": "CC BY 4.0",
+   "licenceUrl": "https://creativecommons.org/licenses/by/4.0",
+   "page": "https://commons.wikimedia.org/wiki/File:NOIRLab_HQ_Server_Racks_(6V6A0375-CC).jpg",
+   "source": "Wikimedia Commons"
+  },
+  {
+   "file": "photo-f203461974.jpg",
+   "files": [
+    "photo-f203461974-500.jpg",
+    "photo-f203461974-960.jpg",
+    "photo-f203461974.jpg"
+   ],
+   "id": "f203461974",
+   "alt": "CGRB server room",
+   "by": "Shawn O'Neil",
+   "licence": "CC BY 2.0",
+   "licenceUrl": "https://creativecommons.org/licenses/by/2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:CGRB_server_room.jpg",
+   "source": "Wikimedia Commons"
+  },
+  {
+   "file": "photo-f16886979.jpg",
+   "files": [
+    "photo-f16886979-500.jpg",
+    "photo-f16886979-960.jpg",
+    "photo-f16886979.jpg"
+   ],
+   "id": "f16886979",
+   "alt": "A view of the server room at The National Archives",
+   "by": "The National Archives (UK)",
+   "licence": "CC BY 3.0",
+   "licenceUrl": "https://creativecommons.org/licenses/by/3.0",
+   "page": "https://commons.wikimedia.org/wiki/File:A_view_of_the_server_room_at_The_National_Archives.jpg",
+   "source": "Wikimedia Commons"
+  },
+  {
+   "file": "photo-f184883534.jpg",
+   "files": [
+    "photo-f184883534-500.jpg",
+    "photo-f184883534-960.jpg",
+    "photo-f184883534.jpg"
+   ],
+   "id": "f184883534",
+   "alt": "Computer Keyboard - stock photo",
+   "by": "espensorvik",
+   "licence": "CC BY 2.0",
+   "licenceUrl": "https://creativecommons.org/licenses/by/2.0",
+   "page": "https://commons.wikimedia.org/wiki/File:Computer_Keyboard_-_stock_photo.jpg",
+   "source": "Wikimedia Commons"
+  }
+ ]
+}
